@@ -16,3 +16,5 @@ and a bunch of things to interact with
 ## General Overview
 look in /src and the index.js is doing alot of the work. Once you make changes in there and save
 webpack will automatically recompile your changes. All the game objects are in /src/assets
+
+dont fuck up and push shit to the master branch, make a branch and make pull requests, google it
