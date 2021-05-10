@@ -7,7 +7,7 @@ api_routes.get('/test', (req, res) => {
 });
 
 api_routes.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('go to /home fool')
 })
 
 api_routes.get('/home', (err, res) => {
