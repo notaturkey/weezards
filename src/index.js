@@ -60,7 +60,7 @@ class MyGame extends Phaser.Scene {
     this.floor.setImmovable(true);
     this.physics.add.collider(this.wiz, this.floor);
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.key = this.input.keyboard.addKey(' ');
+    this.key = this.input.keyboard.addKey('');
     this.physics.world.setBoundsCollision();
   }
 
@@ -68,6 +68,7 @@ class MyGame extends Phaser.Scene {
     //movement
     //sometimes it gets stuck running?
     if (this.cursors.up.isDown){
+      dummy();
       this.wiz.y -=2;
     }
     else if (this.cursors.down.isDown){
@@ -106,3 +107,7 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
+console.log(game);
+function dummy() {
+  console.log("fuck");
+}
