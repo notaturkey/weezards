@@ -7,9 +7,13 @@ import Floor from './assets/world/singleTile.png';
 import bg1 from './assets/world/BG1.png';
 import bg2 from './assets/world/BG2.png';
 import bg3 from './assets/world/BG3.png';
+import Attack1 from './assets/player/Attack1.png';
+
+import MainMenu from './menu.js';
+
 class MyGame extends Phaser.Scene {
   constructor () {
-    super();
+    super('myGame');
   }
 
   preload () {
@@ -18,7 +22,8 @@ class MyGame extends Phaser.Scene {
     this.load.spritesheet('runRight', Run, { frameWidth: 231, frameHeight: 190 });
     this.load.spritesheet('runLeft', RunLeft, { frameWidth: 231, frameHeight: 190 });
     this.load.spritesheet('idle', Idle, { frameWidth: 231, frameHeight: 190 });
-    this.load.spritesheet('floor', Floor, { frameWidth: 47, frameHeight: 47 });      
+    this.load.spritesheet('floor', Floor, { frameWidth: 47, frameHeight: 47 }); 
+    this.load.spritesheet('attack1', Attack1, { frameWidth: 231, frameHeight: 190 });      
     
     //temp backdrop
     this.load.image('bg1', bg1);
@@ -45,6 +50,12 @@ class MyGame extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers("idle", { start: 0, end: 5 }),
       repeat: -1
     });
+    this.anims.create({
+      key: "attack1",
+      frameRate: 20,
+      frames: this.anims.generateFrameNumbers("attack1", { start: 0, end: 7 }),
+      repeat: -1
+    });
 
     //background
     this.add.image(400, 300, 'bg1').setScale(3);
@@ -60,8 +71,15 @@ class MyGame extends Phaser.Scene {
     this.floor.setImmovable(true);
     this.physics.add.collider(this.wiz, this.floor);
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.key = this.input.keyboard.addKey(' ');
+    this.key = this.input.keyboard.addKey('W');
+    console.log(this.key);
     this.physics.world.setBoundsCollision();
+
+    this.attacking = false;
+
+    this.wiz.on(Phaser.Animations.Events.ANIMATION_START, function () {
+      this.attacking=false;
+    }, this);
   }
 
   update() {
@@ -81,10 +99,17 @@ class MyGame extends Phaser.Scene {
       this.wiz.anims.play('runRight', true);
       this.wiz.x+=2;
     }
-    else{
-      //wiz.setVelocityX(0);
+    //attack eh still broken ish ill figure it out later
+    else if (this.key.isDown){
+      this.wiz.anims.play('attack1',true);
+      this.attacking = true; 
+    }
+    else if (!this.attacking){
       this.wiz.anims.play('idle',true);
     }
+
+    
+    
   }
 }
 
@@ -102,7 +127,9 @@ const config = {
            }
         }
     },
-    scene: MyGame
+    scene: [MainMenu,MyGame]
 };
 
 const game = new Phaser.Game(config);
+console.log(game);
+
