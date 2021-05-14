@@ -9,6 +9,7 @@ export default class MainMenu extends Phaser.Scene {
     }
     create () {
         let clickCount =0 ;
+        console.log('urmom');
         this.clickCountText = this.add.text(100, 200, '');
         const helloButton = this.add.text(100, 100, 'click me', { fill: '#0f0' });
         helloButton.setInteractive();  
