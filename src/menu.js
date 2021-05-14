@@ -1,4 +1,3 @@
-import startButton from './assets/mainmenu/start.png';
 import Phaser from 'phaser';
 export default class MainMenu extends Phaser.Scene {
     constructor () {
