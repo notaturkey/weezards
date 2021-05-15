@@ -13,8 +13,7 @@ export default class MainMenu extends Phaser.Scene {
     }
     
     create () {
-        let menuKey= this.sound.add('bgMusic', {loop: false});
-        menuKey.play();
+        
         let clickCount =0 ;
         this.clickCountText = this.add.text(100, 200, '');
         const helloButton = this.add.text(100, 100, 'click me', { fill: '#0f0' });
@@ -32,7 +31,10 @@ export default class MainMenu extends Phaser.Scene {
     updateClickCountText(clickCount) {
         this.clickCountText.setText(`Button has been clicked ${clickCount} times.`);
         console.log("hit");
+        let menuKey= this.sound.add('bgMusic', {loop: false});
+        menuKey.play();
         this.scene.start("myGame");
+        
        
     }
   
