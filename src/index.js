@@ -1,135 +1,20 @@
+// this file will boot the main game with all the scenes 
 import Phaser from 'phaser';
-//import logoImg from './assets/logo.png';
-import Run from './assets/player/Run.png';
-import RunLeft from './assets/player/Runleft.png';
-import Idle from './assets/player/Idle.png';
-import Floor from './assets/world/singleTile.png';
-import bg1 from './assets/world/BG1.png';
-import bg2 from './assets/world/BG2.png';
-import bg3 from './assets/world/BG3.png';
-import Attack1 from './assets/player/Attack1.png';
-
 import MainMenu from './menu.js';
-
-class MyGame extends Phaser.Scene {
-  constructor () {
-    super('myGame');
-  }
-
-  preload () {
-    //this.load.image('logo', logoImg);
-    //player sprites 
-    this.load.spritesheet('runRight', Run, { frameWidth: 231, frameHeight: 190 });
-    this.load.spritesheet('runLeft', RunLeft, { frameWidth: 231, frameHeight: 190 });
-    this.load.spritesheet('idle', Idle, { frameWidth: 231, frameHeight: 190 });
-    this.load.spritesheet('floor', Floor, { frameWidth: 47, frameHeight: 47 }); 
-    this.load.spritesheet('attack1', Attack1, { frameWidth: 231, frameHeight: 190 });      
-    
-    //temp backdrop
-    this.load.image('bg1', bg1);
-    this.load.image('bg2', bg2);
-    this.load.image('bg3', bg3);  
-  }
-  create () {
-    //animations
-    this.anims.create({
-      key: "runRight",
-      frameRate: 20,
-      frames: this.anims.generateFrameNumbers("runRight", { start: 0, end: 7 }),
-      repeat: -1
-    });
-    this.anims.create({
-      key: "runLeft",
-      frameRate: 20,
-      frames: this.anims.generateFrameNumbers("runLeft", { start: 0, end: 7 }),
-      repeat: -1
-    });
-    this.anims.create({
-      key: "idle",
-      frameRate: 10,
-      frames: this.anims.generateFrameNumbers("idle", { start: 0, end: 5 }),
-      repeat: -1
-    });
-    this.anims.create({
-      key: "attack1",
-      frameRate: 20,
-      frames: this.anims.generateFrameNumbers("attack1", { start: 0, end: 7 }),
-      repeat: -1
-    });
-
-    //background
-    this.add.image(400, 300, 'bg1').setScale(3);
-    this.add.image(400, 300, 'bg2').setScale(3);
-    this.add.image(400, 300, 'bg3').setScale(3);     
-
-    //player and floor
-    this.wiz = this.physics.add.sprite(100, 100, "idle");
-    this.wiz.body.setSize(35, 90);
-    this.wiz.body.setOffset(90, 50);
-    this.wiz.body.collideWorldBounds=true;
-    this.floor = this.physics.add.sprite(100, 200, "floor");
-    this.floor.setImmovable(true);
-    this.physics.add.collider(this.wiz, this.floor);
-    this.cursors = this.input.keyboard.createCursorKeys();
-    this.key = this.input.keyboard.addKey('W');
-    console.log(this.key);
-    this.physics.world.setBoundsCollision();
-
-    this.attacking = false;
-
-    this.wiz.on(Phaser.Animations.Events.ANIMATION_START, function () {
-      this.attacking=false;
-    }, this);
-  }
-
-  update() {
-    //movement
-    //sometimes it gets stuck running?
-    if (this.cursors.up.isDown){
-      this.wiz.y -=2;
-    }
-    else if (this.cursors.down.isDown){
-      this.wiz.y+=2;
-    }
-    else if (this.cursors.left.isDown){
-      this.wiz.anims.play('runLeft', true);
-      this.wiz.x -=2;
-    }
-    else if (this.cursors.right.isDown){
-      this.wiz.anims.play('runRight', true);
-      this.wiz.x+=2;
-    }
-    //attack eh still broken ish ill figure it out later
-    else if (this.key.isDown){
-      this.wiz.anims.play('attack1',true);
-      this.attacking = true; 
-    }
-    else if (!this.attacking){
-      this.wiz.anims.play('idle',true);
-    }
-
-    
-    
-  }
-}
+import StartingPoint from './startingPoint.js';
 
 const config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
-    width: 800,
-    height: 600,
+    width: 750,
+    height: 800,
     physics: {
-        default: 'arcade',
-        arcade: {
-            debug:true,
-            gravity: {
-              //y: 200
-           }
+      default: 'arcade',
+      arcade: {
+        debug:true
         }
     },
-    scene: [MainMenu,MyGame]
-};
-
+    scene: [MainMenu,StartingPoint]
+  };
+  
 const game = new Phaser.Game(config);
-console.log(game);
-
