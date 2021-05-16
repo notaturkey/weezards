@@ -31,15 +31,16 @@ export default class StartingPoint extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.guy);
 
 
-
+    //now using a camera to follow player
     this.cameras.main.setBounds(0, 0, 1000, 1000);
     this.physics.world.setBounds(0, 0, 1000, 1000);
     this.cameras.main.centerOn(this.player.x, this.player.y);
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
 
-
+    //input
     this.cursors = this.input.keyboard.createCursorKeys();
     
+    //adding some debug text that displays to the camera position instead of world position
     this.debug = this.add.text(100, 100, '').setOrigin(0.5);
     this.debug.setScrollFactor(0,0);
     this.notify = this.add.text(700, 100, '').setOrigin(0.5);
@@ -51,7 +52,7 @@ export default class StartingPoint extends Phaser.Scene {
 
   update() {
     //movement
-    //sometimes it gets stuck running?
+    //using velocity instead
     this.player.setVelocity(0);
     if (this.cursors.left.isDown){
       this.player.setVelocityX(-500);
@@ -66,6 +67,7 @@ export default class StartingPoint extends Phaser.Scene {
       this.player.setVelocityY(500);
     }
     
+    //detecting collision with npc
     if(this.player.body.embedded){
       this.collided();
     }
